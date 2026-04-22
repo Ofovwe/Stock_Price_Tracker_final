@@ -14,6 +14,10 @@ using std::string;
 class Asset
 {
 public:
+	Asset(double newAssetPrice = 0.0, double newPurchasePrice = 0.0, string newName = "", string newTicker = "", int newNumShares = 0);
+
+	~Asset();
+
 	virtual double calculate_profit_and_loss(); /*Calculate the profit and loss of the asset*/
 	virtual void displayInfo();
 

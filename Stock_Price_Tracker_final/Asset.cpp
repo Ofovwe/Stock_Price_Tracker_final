@@ -2,6 +2,20 @@
 
 
 
+Asset::Asset(double newAssetPrice, double newPurchasePrice, string newName, string newTicker, int newNumShares)
+{
+	currentAssetPrice = newAssetPrice;
+	purchasePrice = newPurchasePrice;
+	name = newName;
+	tickerSymbol = newTicker;
+	numShares = newNumShares;
+}
+
+Asset::~Asset()
+{
+
+}
+
 double Asset::calculate_profit_and_loss()
 {
 	if (this->purchasePrice > this->currentAssetPrice)

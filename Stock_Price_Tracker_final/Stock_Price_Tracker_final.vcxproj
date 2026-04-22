@@ -185,10 +185,12 @@
     <ClCompile Include="Asset.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Portfolio.cpp" />
+    <ClCompile Include="Stock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asset.hpp" />
     <ClInclude Include="Portfolio.hpp" />
+    <ClInclude Include="Stock.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
