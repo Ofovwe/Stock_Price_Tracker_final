@@ -4,5 +4,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="Stock_Price_Tracker_final/Stock_Price_Tracker_final.vcxproj" />
+  <Project Path="Stock_Price_Tracker_final/Stock_Price_Tracker_final.vcxproj" Id="81fb92ce-2e5a-4861-8d83-f2bad5bdb28a" />
 </Solution>
