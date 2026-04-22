@@ -23,3 +23,8 @@ void Asset::displayInfo()
 	std::cout << "Number of shares owned: " << numShares << std::endl;
 
 }
+
+double Asset::get_value()
+{
+	return this->currentAssetPrice* this->numShares;
+}
