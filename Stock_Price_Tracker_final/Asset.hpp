@@ -3,9 +3,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-
-
-#include <forward_list>
+#include <vector>
 
 
 using std::cout;
@@ -17,7 +15,8 @@ class Asset
 public:
 	virtual double calculate_profit_and_loss(); /*Calculate the profit and loss of the asset*/
 	virtual void displayInfo();
-private:
+
+protected:
 	double currentAssetPrice;
 	double purchasePrice;
 	string name;
