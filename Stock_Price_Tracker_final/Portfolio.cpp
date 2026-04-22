@@ -1,5 +1,13 @@
 #include "Portfolio.hpp"
 
+Portfolio::Portfolio(int newNumAssets)
+{
+	numAssets = newNumAssets;
+}
+
+Portfolio::~Portfolio()
+{}
+
 double Portfolio::calculateProfit()
 {
 	double totalProfit = 0.0;
