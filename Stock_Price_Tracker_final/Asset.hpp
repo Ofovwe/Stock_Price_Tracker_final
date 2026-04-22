@@ -12,7 +12,11 @@ using std::string;
 class Asset
 {
 public:
-
+	
 private:
-
+	double currentStockPrice;
+	double purchasePrice;
+	string name;
+	string tickerSymbol;
+	int numShares;
 };
