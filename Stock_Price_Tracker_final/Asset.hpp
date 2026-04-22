@@ -12,7 +12,7 @@ using std::string;
 class Asset
 {
 public:
-	
+	virtual void displayInfo();
 private:
 	double currentStockPrice;
 	double purchasePrice;
