@@ -4,6 +4,23 @@ using std::cout;
 using std::endl;
 using std::string;
 
+Bond::Bond(string newName,
+    string newTickerSymbol,
+    double newCurrentAssetPrice,
+    double newPurchasePrice,
+    int newNumShares,
+    double newInterestRate,
+    int newYearsToMaturity)
+    : Asset(newCurrentAssetPrice,
+        newPurchasePrice,
+        newName,
+        newTickerSymbol,
+        newNumShares)
+{
+    interestRate = newInterestRate;
+    yearsToMaturity = newYearsToMaturity;
+}
+
 Bond::Bond(std::ifstream& file)
 {
     string line;

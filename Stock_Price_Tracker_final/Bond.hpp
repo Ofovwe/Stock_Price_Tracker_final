@@ -8,6 +8,13 @@ class Bond : public Asset
 {
 public:
     Bond(std::ifstream& file); 
+    Bond(string newName = "",
+        string newTickerSymbol = "",
+        double newCurrentAssetPrice = 0.0,
+        double newPurchasePrice = 0.0,
+        int newNumShares = 0,
+        double newInterestRate = 0.0,
+        int newYearsToMaturity = 0);
        
 
     virtual ~Bond();

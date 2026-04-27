@@ -4,6 +4,23 @@ using std::endl;
 using std::string;
 
 
+Stock::Stock(string newName,
+    string newTickerSymbol,
+    double newCurrentAssetPrice,
+    double newPurchasePrice,
+    int newNumShares,
+    string newSector,
+    double newDividendYield)
+    : Asset(newCurrentAssetPrice,
+        newPurchasePrice,
+        newName,
+        newTickerSymbol,
+        newNumShares)
+{
+    sector = newSector;
+    dividendYield = newDividendYield;
+}
+
 Stock::Stock(std::ifstream& file)
 {
     string line;

@@ -37,6 +37,23 @@ Crypto::Crypto(std::ifstream& file)
         stakingEnabled = false;
 }
 
+Crypto::Crypto(string newName,
+    string newTickerSymbol,
+    double newCurrentAssetPrice,
+    double newPurchasePrice,
+    int newNumShares,
+    double apy ,
+    bool Staking)
+    : Asset(newCurrentAssetPrice,
+        newPurchasePrice,
+        newName,
+        newTickerSymbol,
+        newNumShares)
+{
+    this->apy = apy;
+    this->stakingEnabled = Staking;
+}
+
 Crypto::~Crypto()
 {}
 

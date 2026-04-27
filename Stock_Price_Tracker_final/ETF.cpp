@@ -4,7 +4,25 @@ using std::cout;
 using std::endl;
 using std::string;
 
+// ETF.cpp
+#include "ETF.hpp"
 
+ETF::ETF(string newName,
+    string newTickerSymbol,
+    double newCurrentAssetPrice,
+    double newPurchasePrice,
+    int newNumShares,
+    double newExpenseRatio,
+    string newBenchmarkIndex)
+    : Asset(newCurrentAssetPrice,
+        newPurchasePrice,
+        newName,
+        newTickerSymbol,
+        newNumShares)
+{
+    expenseRatio = newExpenseRatio;
+    benchmarkIndex = newBenchmarkIndex;
+}
 ETF::ETF(std::ifstream& file)
 {
     string line;
@@ -30,6 +48,7 @@ ETF::ETF(std::ifstream& file)
 
     getline(ss, benchmarkIndex, ',');
 }
+
 
 ETF::~ETF()
 {}

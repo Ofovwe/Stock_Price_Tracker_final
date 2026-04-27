@@ -8,6 +8,13 @@ class Crypto : public Asset
 {
 public:
     Crypto(std::ifstream& file);
+    Crypto(string newName = "",
+        string newTickerSymbol = "",
+        double newCurrentAssetPrice = 0.0,
+        double newPurchasePrice = 0.0,
+        int newNumShares = 0,
+        double apy = 0,
+        bool Staking=false);
 
     virtual ~Crypto();
 
