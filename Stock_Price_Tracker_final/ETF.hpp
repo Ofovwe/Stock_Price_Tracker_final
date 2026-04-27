@@ -3,13 +3,7 @@
 class ETF : public Asset
 {
 public:
-    ETF(double newCurrentPrice = 0.0,
-        double newPurchasePrice = 0.0,
-        string newName = "",
-        string newTicker = "",
-        double newShares = 0,
-        double newExpenseRatio = 0.0,
-        string newIndex = "");
+    ETF(std::ifstream& file);
 
     ~ETF();
 

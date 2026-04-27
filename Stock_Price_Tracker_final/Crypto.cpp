@@ -4,17 +4,37 @@ using std::cout;
 using std::endl;
 using std::string;
 
-Crypto::Crypto(double newCurrentPrice,
-    double newPurchasePrice,
-    string newName,
-    string newTicker,
-    double newShares,
-    double newApy,
-    bool newStaking)
-    : Asset(newCurrentPrice, newPurchasePrice, newName, newTicker, newShares)
+#include <sstream>
+
+Crypto::Crypto(std::ifstream& file)
 {
-    apy = newApy;
-    stakingEnabled = newStaking;
+    string line;
+    getline(file, line);
+
+    std::stringstream ss(line);
+    string temp;
+
+    getline(ss, name, ',');
+    getline(ss, tickerSymbol, ',');
+
+    getline(ss, temp, ',');
+    currentAssetPrice = stod(temp);
+
+    getline(ss, temp, ',');
+    purchasePrice = stod(temp);
+
+    getline(ss, temp, ',');
+    quantity = stod(temp);
+
+    getline(ss, temp, ',');
+    apy = stod(temp);
+
+    getline(ss, temp, ',');
+
+    if (temp == "true")
+        stakingEnabled = true;
+    else
+        stakingEnabled = false;
 }
 
 Crypto::~Crypto()

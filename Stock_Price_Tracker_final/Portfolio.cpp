@@ -41,3 +41,41 @@ void Portfolio::removeAsset(string assetName)
 		}
 	}
 }
+
+void Portfolio::load_file(std::ifstream& stock,
+    std::ifstream& bond,
+    std::ifstream& etf,
+    std::ifstream& crypto)
+{
+    string line;
+
+    // skip headers
+    getline(stock, line);
+    getline(bond, line);
+    getline(etf, line);
+    getline(crypto, line);
+
+    while (stock.peek() != EOF)
+    {
+        Stock newStock(stock);
+        listOfAssets.push_back(newStock);
+    }
+
+    while (bond.peek() != EOF)
+    {
+        Bond newBond(bond);
+        listOfAssets.push_back(newBond);
+    }
+
+    while (etf.peek() != EOF)
+    {
+        ETF newETF(etf);
+        listOfAssets.push_back(newETF);
+    }
+
+    while (crypto.peek() != EOF)
+    {
+        Crypto newCrypto(crypto);
+        listOfAssets.push_back(newCrypto);
+    }
+}

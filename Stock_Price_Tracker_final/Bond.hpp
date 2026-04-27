@@ -7,13 +7,8 @@ using std::string;
 class Bond : public Asset
 {
 public:
-    Bond(double newCurrentPrice = 0.0,
-        double newPurchasePrice = 0.0,
-        string newName = "",
-        string newTicker = "",
-        double newShares = 0,
-        double newInterestRate = 0.0,
-        int newYearsToMaturity = 0);
+    Bond(std::ifstream& file); 
+       
 
     virtual ~Bond();
 

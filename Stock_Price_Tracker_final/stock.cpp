@@ -2,17 +2,32 @@
 using std::cout;
 using std::endl;
 using std::string;
-Stock::Stock(double newCurrentPrice,
-    double newPurchasePrice,
-    string newName,
-    string newTicker,
-    int newShares,
-    string newSector,
-    double newDividendYield)
-    : Asset(newCurrentPrice, newPurchasePrice, newName, newTicker, newShares)
+
+
+Stock::Stock(std::ifstream& file)
 {
-    sector = newSector;
-    dividendYield = newDividendYield;
+    string line;
+    getline(file, line);
+
+    std::stringstream ss(line);
+    string temp;
+
+    getline(ss, name, ',');
+    getline(ss, tickerSymbol, ',');
+
+    getline(ss, temp, ',');
+    currentAssetPrice = stod(temp);
+
+    getline(ss, temp, ',');
+    purchasePrice = stod(temp);
+
+    getline(ss, temp, ',');
+    quantity = stoi(temp);
+
+    getline(ss, sector, ',');
+
+    getline(ss, temp, ',');
+    dividendYield = stod(temp);
 }
 
 Stock::~Stock()

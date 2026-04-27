@@ -7,13 +7,7 @@ using std::string;
 class Crypto : public Asset
 {
 public:
-    Crypto(double newCurrentPrice = 0.0,
-        double newPurchasePrice = 0.0,
-        string newName = "",
-        string newTicker = "",
-        double newShares = 0,
-        double newApy = 0.0,
-        bool newStaking = false);
+    Crypto(std::ifstream& file);
 
     virtual ~Crypto();
 

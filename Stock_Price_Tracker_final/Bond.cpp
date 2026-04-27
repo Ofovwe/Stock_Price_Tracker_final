@@ -4,17 +4,31 @@ using std::cout;
 using std::endl;
 using std::string;
 
-Bond::Bond(double newCurrentPrice,
-    double newPurchasePrice,
-    string newName,
-    string newTicker,
-    double newShares,
-    double newInterestRate,
-    int newYearsToMaturity)
-    : Asset(newCurrentPrice, newPurchasePrice, newName, newTicker, newShares)
+Bond::Bond(std::ifstream& file)
 {
-    interestRate = newInterestRate;
-    yearsToMaturity = newYearsToMaturity;
+    string line;
+    getline(file, line);
+
+    std::stringstream ss(line);
+    string temp;
+
+    getline(ss, name, ',');
+    getline(ss, tickerSymbol, ',');
+
+    getline(ss, temp, ',');
+    currentAssetPrice = stod(temp);
+
+    getline(ss, temp, ',');
+    purchasePrice = stod(temp);
+
+    getline(ss, temp, ',');
+    quantity = stoi(temp);
+
+    getline(ss, temp, ',');
+    interestRate = stod(temp);
+
+    getline(ss, temp, ',');
+    yearsToMaturity = stoi(temp);
 }
 
 Bond::~Bond()

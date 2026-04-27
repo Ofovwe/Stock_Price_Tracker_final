@@ -1,20 +1,34 @@
 #include "ETF.hpp"
-#include <iostream>
+
 using std::cout;
 using std::endl;
 using std::string;
 
-ETF::ETF(double newCurrentPrice,
-    double newPurchasePrice,
-    string newName,
-    string newTicker,
-    double newShares,
-    double newExpenseRatio,
-    string newIndex)
-    : Asset(newCurrentPrice, newPurchasePrice, newName, newTicker, newShares)
+
+ETF::ETF(std::ifstream& file)
 {
-    expenseRatio = newExpenseRatio;
-    benchmarkIndex = newIndex;
+    string line;
+    getline(file, line);
+
+    std::stringstream ss(line);
+    string temp;
+
+    getline(ss, name, ',');
+    getline(ss, tickerSymbol, ',');
+
+    getline(ss, temp, ',');
+    currentAssetPrice = stod(temp);
+
+    getline(ss, temp, ',');
+    purchasePrice = stod(temp);
+
+    getline(ss, temp, ',');
+    quantity = stoi(temp);
+
+    getline(ss, temp, ',');
+    expenseRatio = stod(temp);
+
+    getline(ss, benchmarkIndex, ',');
 }
 
 ETF::~ETF()

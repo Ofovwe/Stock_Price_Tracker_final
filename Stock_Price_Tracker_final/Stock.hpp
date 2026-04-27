@@ -3,13 +3,7 @@
 class Stock : public Asset
 {
 public:
-    Stock(double newCurrentPrice = 0.0,
-        double newPurchasePrice = 0.0,
-        string newName = "",
-        string newTicker = "",
-        int newShares = 0,
-        string newSector = "",
-        double newDividendYield = 0.0);
+    Stock(std::ifstream& file);
 
     virtual ~Stock();
 
