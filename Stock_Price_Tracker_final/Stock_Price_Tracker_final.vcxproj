@@ -183,14 +183,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Asset.cpp" />
+    <ClCompile Include="Bond.cpp" />
+    <ClCompile Include="Crypto.cpp" />
+    <ClCompile Include="ETF.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Portfolio.cpp" />
     <ClCompile Include="Stock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asset.hpp" />
+    <ClInclude Include="Bond.hpp" />
+    <ClInclude Include="Crypto.hpp" />
+    <ClInclude Include="ETF.hpp" />
     <ClInclude Include="Portfolio.hpp" />
     <ClInclude Include="Stock.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Bond.csv" />
+    <None Include="Crypto.csv" />
+    <None Include="ETF.csv" />
+    <None Include="Stock.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

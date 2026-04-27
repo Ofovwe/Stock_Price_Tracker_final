@@ -27,6 +27,15 @@
     <ClCompile Include="Stock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Crypto.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ETF.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bond.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asset.hpp">
@@ -38,5 +47,28 @@
     <ClInclude Include="Stock.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Crypto.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ETF.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bond.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Stock.csv">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Crypto.csv">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Bond.csv">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ETF.csv">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

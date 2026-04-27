@@ -8,7 +8,7 @@ Asset::Asset(double newAssetPrice, double newPurchasePrice, string newName, stri
 	purchasePrice = newPurchasePrice;
 	name = newName;
 	tickerSymbol = newTicker;
-	numShares = newNumShares;
+	quantity = newNumShares;
 }
 
 Asset::~Asset()
@@ -20,11 +20,11 @@ double Asset::calculate_profit_and_loss()
 {
 	if (this->purchasePrice > this->currentAssetPrice)
 	{
-		return (this->purchasePrice - this->currentAssetPrice) * this->numShares;
+		return (this->purchasePrice - this->currentAssetPrice) * this->quantity;
 	}
 	else
 	{
-		return  -1 * this->numShares * (this->currentAssetPrice - this->purchasePrice);
+		return  -1 * this->quantity * (this->currentAssetPrice - this->purchasePrice);
 	}
 }
 void Asset::displayInfo()
@@ -34,11 +34,11 @@ void Asset::displayInfo()
 	std::cout << "Asset Symbol: " << tickerSymbol << std::endl;
 	std::cout << "Current Asset Price: " << currentAssetPrice << std::endl;
 	std::cout << "Price Purchased for: " << purchasePrice << std::endl;
-	std::cout << "Number of shares owned: " << numShares << std::endl;
+	std::cout << "Number of shares owned: " << quantity << std::endl;
 
 }
 
 double Asset::get_value()
 {
-	return this->currentAssetPrice* this->numShares;
+	return this->currentAssetPrice* this->quantity;
 }

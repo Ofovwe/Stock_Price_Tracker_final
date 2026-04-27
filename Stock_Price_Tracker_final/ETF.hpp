@@ -1,23 +1,23 @@
 #pragma once
 #include "Asset.hpp"
-class Stock : public Asset
+class ETF : public Asset
 {
 public:
-    Stock(double newCurrentPrice = 0.0,
+    ETF(double newCurrentPrice = 0.0,
         double newPurchasePrice = 0.0,
         string newName = "",
         string newTicker = "",
-        int newShares = 0,
-        string newSector = "",
-        double newDividendYield = 0.0);
+        double newShares = 0,
+        double newExpenseRatio = 0.0,
+        string newIndex = "");
 
-    virtual ~Stock();
+    ~ETF();
 
     double calculate_profit_and_loss() override;
     double get_value() override;
     void displayInfo() override;
 
 private:
-    string sector;
-    double dividendYield;
+    double expenseRatio;   
+    string benchmarkIndex; 
 };

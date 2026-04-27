@@ -1,42 +1,44 @@
-#include "Stock.hpp"
+#include "ETF.hpp"
+#include <iostream>
 using std::cout;
 using std::endl;
 using std::string;
-Stock::Stock(double newCurrentPrice,
+
+ETF::ETF(double newCurrentPrice,
     double newPurchasePrice,
     string newName,
     string newTicker,
-    int newShares,
-    string newSector,
-    double newDividendYield)
+    double newShares,
+    double newExpenseRatio,
+    string newIndex)
     : Asset(newCurrentPrice, newPurchasePrice, newName, newTicker, newShares)
 {
-    sector = newSector;
-    dividendYield = newDividendYield;
+    expenseRatio = newExpenseRatio;
+    benchmarkIndex = newIndex;
 }
 
-Stock::~Stock()
+ETF::~ETF()
 {}
 
-double Stock::calculate_profit_and_loss()
+double ETF::calculate_profit_and_loss()
 {
     return (currentAssetPrice - purchasePrice) * quantity;
 }
 
-double Stock::get_value()
+double ETF::get_value()
 {
-    return currentAssetPrice *quantity;
+    return currentAssetPrice * quantity;
 }
 
-void Stock::displayInfo()
+void ETF::displayInfo()
 {
-    cout << "Stock Name: " << name << endl;
+    cout << "ETF Name: " << name << endl;
     cout << "Ticker: " << tickerSymbol << endl;
     cout << "Shares: " << quantity << endl;
     cout << "Current Price: $" << currentAssetPrice << endl;
     cout << "Purchase Price: $" << purchasePrice << endl;
-    cout << "Sector: " << sector << endl;
-    cout << "Dividend Yield: " << dividendYield << "%" << endl;
+    cout << "Benchmark Index: " << benchmarkIndex << endl;
+    cout << "Expense Ratio: " << expenseRatio << "%" << endl;
     cout << "Current Value: $" << get_value() << endl;
     cout << "Profit/Loss: $" << calculate_profit_and_loss() << endl;
 }

@@ -6,7 +6,9 @@ Portfolio::Portfolio(int newNumAssets)
 }
 
 Portfolio::~Portfolio()
-{}
+{
+	
+}
 
 double Portfolio::calculateProfit()
 {

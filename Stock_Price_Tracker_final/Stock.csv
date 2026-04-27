@@ -1,0 +1,9 @@
+name,tickerSymbol,currentAssetPrice,purchasePrice,numShares,sector,dividendYield
+Apple Inc.,AAPL,175.50,150.00,10,Technology,0.50
+Microsoft Corp.,MSFT,320.10,280.00,8,Technology,0.75
+Coca-Cola Co.,KO,60.25,55.00,15,Consumer Staples,3.10
+NVIDIA Corp.,NVDA,890.40,750.00,5,Technology,0.03
+JPMorgan Chase,JPM,198.75,180.00,7,Financials,2.15
+Tesla Inc.,TSLA,245.60,210.00,6,Consumer Discretionary,0.00
+Johnson & Johnson,JNJ,152.30,145.00,9,Healthcare,2.95
+Amazon.com Inc.,AMZN,185.90,170.00,4,Consumer Discretionary,0.00
