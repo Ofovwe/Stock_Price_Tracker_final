@@ -11,6 +11,7 @@ public:
 	
 	double calculateProfit();
 	void displayInfo();
+	void removeAsset(string assetName);
 private:
 	std::vector<Asset> listOfAssets;
 	int numAssets;

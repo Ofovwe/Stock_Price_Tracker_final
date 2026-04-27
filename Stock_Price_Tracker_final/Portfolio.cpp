@@ -26,3 +26,16 @@ void Portfolio::displayInfo()
 		listOfAssets[i].displayInfo();
 	}
 }
+
+void Portfolio::removeAsset(string assetName)
+{
+	for (int i = 0; i < numAssets; i++)
+	{
+		if (listOfAssets[i].get_name() == assetName)
+		{
+			numAssets--;
+			listOfAssets.erase(listOfAssets.begin()+i);
+			break;
+		}
+	}
+}

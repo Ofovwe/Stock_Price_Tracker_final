@@ -21,7 +21,9 @@ public:
 	virtual double calculate_profit_and_loss(); /*Calculate the profit and loss of the asset*/
 	virtual void displayInfo();
 	virtual double get_value();
+	virtual string get_name() { return name; };
 
+	
 protected:
 	double currentAssetPrice;
 	double purchasePrice;
