@@ -15,9 +15,10 @@ public:
 	
 	double calculateProfit();
 	void displayInfo();
+	double calculate_total_value();
 	void removeAsset(string assetName);
 	void load_file(std::ifstream& stock, std::ifstream& bond, std::ifstream& etf, std::ifstream& crypto);
 private:
-	std::vector<Asset> listOfAssets;
+	std::vector<Asset*> listOfAssets;
 	int numAssets;
 };

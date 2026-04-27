@@ -1,5 +1,5 @@
 name,tickerSymbol,currentAssetPrice,purchasePrice,numShares,interestRate,yearsToMaturity
-U.S. Treasury Bond,T-BOND,980.00,950.00,2,4.25,10
+U.S. Treasury Bond,T-BOND,1080.00,950.00,2,4.25,10
 Corporate Bond Fund,CORP,102.50,100.00,12,5.10,7
 Municipal Bond,MUNI,1010.00,1000.00,1,3.80,15
 Investment Grade Bond,IGB,995.00,970.00,5,4.75,8

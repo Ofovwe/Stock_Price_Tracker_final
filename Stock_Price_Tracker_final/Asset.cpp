@@ -18,14 +18,7 @@ Asset::~Asset()
 
 double Asset::calculate_profit_and_loss()
 {
-	if (this->purchasePrice > this->currentAssetPrice)
-	{
-		return (this->purchasePrice - this->currentAssetPrice) * this->quantity;
-	}
-	else
-	{
-		return  -1 * this->quantity * (this->currentAssetPrice - this->purchasePrice);
-	}
+	return (currentAssetPrice - purchasePrice) * quantity;
 }
 void Asset::displayInfo()
 {

@@ -36,7 +36,7 @@ Bond::~Bond()
 
 double Bond::calculate_profit_and_loss()
 {
-    return (currentAssetPrice - purchasePrice) *quantity;
+    return (currentAssetPrice - purchasePrice) * quantity;
 }
 
 double Bond::get_value()
