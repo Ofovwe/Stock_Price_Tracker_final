@@ -28,5 +28,4 @@ protected:
 	string name;
 	string tickerSymbol;
 	int numShares;
-	int value;
 };
