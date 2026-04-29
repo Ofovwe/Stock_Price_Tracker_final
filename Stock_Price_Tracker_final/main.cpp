@@ -14,14 +14,16 @@ int main()
 
     myPortfolio.load_file(stockFile, bondFile, etfFile, cryptoFile);
 
-    myPortfolio.displayInfo();
+    /*myPortfolio.displayInfo();
 
     std::cout << "Total Portfolio Value: $"
         << myPortfolio.calculate_total_value() << std::endl;
    
 
     std::cout << "Total Profit/Loss: $"
-        << myPortfolio.calculateProfit() << std::endl;
+        << myPortfolio.calculateProfit() << std::endl;*/
+    Dashboard d;
+    d.run(myPortfolio);
 
     return 0;
 }
