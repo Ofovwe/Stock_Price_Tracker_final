@@ -17,6 +17,7 @@ public:
         bool Staking=false);
 
     virtual ~Crypto();
+   void saveToFile(std::ofstream& file);
 
     double calculate_profit_and_loss() override;
     double get_value() override;

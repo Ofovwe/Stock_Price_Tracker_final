@@ -12,6 +12,7 @@ public:
         double newDividendYield = 0.0);
 
     Stock(std::ifstream& file);
+    void saveToFile(std::ofstream& file);
 
     virtual ~Stock();
 

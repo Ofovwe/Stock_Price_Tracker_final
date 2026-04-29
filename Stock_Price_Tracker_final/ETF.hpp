@@ -12,6 +12,7 @@ public:
         string newBenchmarkIndex = "");
 
     ETF(std::ifstream& file);
+    void saveToFile(std::ofstream& file);
     
     
 

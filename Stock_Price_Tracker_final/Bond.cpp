@@ -73,3 +73,13 @@ void Bond::displayInfo()
     cout << "Current Value: $" << get_value() << endl;
     cout << "Profit/Loss: $" << calculate_profit_and_loss() << endl;
 }
+void Bond::saveToFile(std::ofstream& file)
+{
+    file << name << ","
+        << tickerSymbol << ","
+        << currentAssetPrice << ","
+        << purchasePrice << ","
+        << quantity << ","
+        << interestRate << ","
+        << yearsToMaturity << "\n";
+}

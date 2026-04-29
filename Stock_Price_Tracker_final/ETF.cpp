@@ -75,3 +75,13 @@ void ETF::displayInfo()
     cout << "Current Value: $" << get_value() << endl;
     cout << "Profit/Loss: $" << calculate_profit_and_loss() << endl;
 }
+void ETF::saveToFile(std::ofstream& file)
+{
+    file << name << ","
+        << tickerSymbol << ","
+        << currentAssetPrice << ","
+        << purchasePrice << ","
+        << quantity << ","
+        << expenseRatio << ","
+        << benchmarkIndex << "\n";
+}

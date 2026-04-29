@@ -14,6 +14,10 @@ public:
 	~Portfolio();
 	
 	double calculateProfit();
+	void viewStocks();
+	void viewETFs();
+	void viewCryptos();
+	void viewBonds();
 	void displayInfo();
 	double calculate_total_value();
 	void addStock();
@@ -22,7 +26,8 @@ public:
 	void addBond();
 	void best_performing_asset();
 	void worst_performing_asset();
-	void removeAsset(string assetName);
+	void  saveToFile();
+	void removeAsset();
 	void load_file(std::ifstream& stock, std::ifstream& bond, std::ifstream& etf, std::ifstream& crypto);
 
 private:

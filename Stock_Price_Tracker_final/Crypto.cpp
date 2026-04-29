@@ -87,3 +87,13 @@ void Crypto::displayInfo()
     cout << "Current Value: $" << get_value() << endl;
     cout << "Profit/Loss: $" << calculate_profit_and_loss() << endl;
 }
+void Crypto::saveToFile(std::ofstream& file)
+{
+    file << name << ","
+        << tickerSymbol << ","
+        << currentAssetPrice << ","
+        << purchasePrice << ","
+        << quantity << ","
+        << apy << ","
+        << stakingEnabled << "\n";
+}

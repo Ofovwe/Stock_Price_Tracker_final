@@ -72,3 +72,13 @@ void Stock::displayInfo()
     cout << "Current Value: $" << get_value() << endl;
     cout << "Profit/Loss: $" << calculate_profit_and_loss() << endl;
 }
+void Stock::saveToFile(std::ofstream& file)
+{
+    file << name << ","
+        << tickerSymbol << ","
+        << currentAssetPrice << ","
+        << purchasePrice << ","
+        << quantity<< ","
+        << sector << ","
+        << dividendYield << "\n";
+}

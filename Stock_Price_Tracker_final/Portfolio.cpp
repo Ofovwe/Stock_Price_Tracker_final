@@ -654,17 +654,51 @@ void Portfolio::addCrypto()
     cout << "Crypto added successfully.\n";
 }
 
-void Portfolio::removeAsset(string assetName)
+void Portfolio::removeAsset()
 {
-	for (int i = 0; i < numAssets; i++)
-	{
-		if (listOfAssets[i]->get_name() == assetName)
-		{
-			numAssets--;
-			listOfAssets.erase(listOfAssets.begin()+i);
-			break;
-		}
-	}
+    if (numAssets == 0)
+    {
+        cout << "Portfolio is empty.\n";
+        return;
+    }
+
+    string assetName;
+    bool found = false;
+
+    cout << "Enter asset name to remove: ";
+    cin >> std::ws;
+    getline(cin, assetName);
+
+    while (assetName.empty())
+    {
+        cout << "Name cannot be empty. Enter asset name: ";
+        getline(cin, assetName);
+    }
+
+    for (int i = 0; i < numAssets; i++)
+    {
+        if (listOfAssets[i]->get_name() == assetName)
+        {
+            delete listOfAssets[i];
+
+            for (int j = i; j < numAssets - 1; j++)
+            {
+                listOfAssets[j] = listOfAssets[j + 1];
+            }
+
+            listOfAssets[numAssets - 1] = nullptr;
+            numAssets--;
+
+            cout << "Asset removed successfully.\n";
+            found = true;
+            break;
+        }
+    }
+
+    if (!found)
+    {
+        cout << "Asset not found.\n";
+    }
 }
 void Portfolio::load_file(std::ifstream& stock,
     std::ifstream& bond,
@@ -701,4 +735,143 @@ void Portfolio::load_file(std::ifstream& stock,
         numAssets++;
     }
 
+}
+void Portfolio::saveToFile()
+{
+    std::ofstream stockFile("stock.csv");
+    std::ofstream etfFile("etf.csv");
+    std::ofstream bondFile("bond.csv");
+    std::ofstream cryptoFile("crypto.csv");
+
+    if (!stockFile.is_open() || !etfFile.is_open() ||
+        !bondFile.is_open() || !cryptoFile.is_open())
+    {
+        std::cout << "Error opening one or more files.\n";
+        return;
+    }
+
+    stockFile << "name,tickerSymbol,currentAssetPrice,purchasePrice,numShares,sector,dividendYield\n";
+    etfFile << "name,tickerSymbol,currentAssetPrice,purchasePrice,numShares,expenseRatio,benchmarkIndex\n";
+    bondFile << "name,tickerSymbol,currentAssetPrice,purchasePrice,numShares,interestRate,yearsToMaturity\n";
+    cryptoFile << "name,tickerSymbol,currentAssetPrice,purchasePrice,numShares,apy,stakingEnabled\n";
+
+    for (int i = 0; i < numAssets; i++)
+    {
+        if (Stock* stock = dynamic_cast<Stock*>(listOfAssets[i]))
+        {
+            stock->saveToFile(stockFile);
+        }
+        else if (ETF* etf = dynamic_cast<ETF*>(listOfAssets[i]))
+        {
+            etf->saveToFile(etfFile);
+        }
+        else if (Bond* bond = dynamic_cast<Bond*>(listOfAssets[i]))
+        {
+            bond->saveToFile(bondFile);
+        }
+        else if (Crypto* crypto = dynamic_cast<Crypto*>(listOfAssets[i]))
+        {
+            crypto->saveToFile(cryptoFile);
+        }
+    }
+
+    stockFile.close();
+    etfFile.close();
+    bondFile.close();
+    cryptoFile.close();
+
+    std::cout << "Portfolio saved successfully.\n";
+}
+void Portfolio::viewStocks()
+{
+    bool found = false;
+
+    std::cout << "\n===== Stocks =====\n";
+
+    for (int i = 0; i < numAssets; i++)
+    {
+        Stock* stock = dynamic_cast<Stock*>(listOfAssets[i]);
+
+        if (stock != nullptr)
+        {
+            stock->displayInfo();
+            std::cout << std::endl;
+            found = true;
+        }
+    }
+
+    if (!found)
+    {
+        cout << "No stocks found.\n";
+    }
+}
+void Portfolio::viewETFs()
+{
+    bool found = false;
+
+    cout << "\n===== ETFs =====\n";
+
+    for (int i = 0; i < numAssets; i++)
+    {
+        ETF* etf = dynamic_cast<ETF*>(listOfAssets[i]);
+
+        if (etf != nullptr)
+        {
+            etf->displayInfo();
+            std::cout << std::endl;
+            found = true;
+        }
+    }
+
+    if (!found)
+    {
+        cout << "No ETFs found.\n";
+    }
+}
+void Portfolio::viewCryptos()
+{
+    bool found = false;
+
+    cout << "\n===== Crypto =====\n";
+
+    for (int i = 0; i < numAssets; i++)
+    {
+        Crypto* crypto = dynamic_cast<Crypto*>(listOfAssets[i]);
+
+        if (crypto != nullptr)
+        {
+            crypto->displayInfo();
+            std:: cout << std::endl;
+            found = true;
+        }
+    }
+
+    if (!found)
+    {
+        std::cout << "No crypto assets found.\n";
+    }
+}
+
+void Portfolio::viewBonds()
+{
+    bool found = false;
+
+    cout << "\n===== Bonds =====\n";
+
+    for (int i = 0; i < numAssets; i++)
+    {
+        Bond* bond = dynamic_cast<Bond*>(listOfAssets[i]);
+
+        if (bond != nullptr)
+        {
+            bond->displayInfo();
+            std::cout << std::endl;
+            found = true;
+        }
+    }
+
+    if (!found)
+    {
+        cout << "No bonds found.\n";
+    }
 }
