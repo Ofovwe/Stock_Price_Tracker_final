@@ -22,6 +22,8 @@ public:
 	double calculate_total_value();
 	void removeAsset(string assetName);
 	void load_file(std::ifstream& stock, std::ifstream& bond, std::ifstream& etf, std::ifstream& crypto);
+
+	void sort
 private:
 	std::vector<Asset*> listOfAssets;
 	int numAssets;
