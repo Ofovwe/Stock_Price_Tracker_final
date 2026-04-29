@@ -10,6 +10,16 @@ Portfolio::~Portfolio()
 	
 }
 
+int Portfolio::getNumAssets() const
+{
+    return numAssets;
+}
+
+const std::vector<Asset*>& Portfolio::getAssets() const
+{
+    return listOfAssets;
+}
+
 double Portfolio::calculateProfit()
 {
 	double totalProfit = 0.0;

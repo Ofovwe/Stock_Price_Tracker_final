@@ -1,5 +1,6 @@
 
 #include "Portfolio.hpp"
+#include "Dashboard.hpp"
 
 int main()
 {
@@ -12,14 +13,8 @@ int main()
 
     myPortfolio.load_file(stockFile, bondFile, etfFile, cryptoFile);
 
-    myPortfolio.displayInfo();
-
-    std::cout << "Total Portfolio Value: $"
-        << myPortfolio.calculate_total_value() << std::endl;
-   
-
-    std::cout << "Total Profit/Loss: $"
-        << myPortfolio.calculateProfit() << std::endl;
+    Dashboard Dashboard;
+    Dashboard.run(myPortfolio);
 
     return 0;
 }
