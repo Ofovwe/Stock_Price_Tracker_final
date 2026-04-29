@@ -1,5 +1,6 @@
 #include "Portfolio.hpp"
 
+
 Portfolio::Portfolio(int newNumAssets)
 {
 	numAssets = newNumAssets;
@@ -99,4 +100,22 @@ void Portfolio::load_file(std::ifstream& stock,
         numAssets++;
     }
 
+}
+
+void Portfolio::sortByValue()
+{
+    std::sort(listOfAssets.begin(), listOfAssets.end(),
+        [](Asset* a, Asset* b)
+        {
+            return a->get_value() > b->get_value(); // highest first
+        });
+}
+
+void Portfolio::sortByProfit()
+{
+    std::sort(listOfAssets.begin(), listOfAssets.end(),
+        [](Asset* a, Asset* b)
+        {
+            return a->calculate_profit_and_loss() > b->calculate_profit_and_loss(); // highest first
+        });
 }

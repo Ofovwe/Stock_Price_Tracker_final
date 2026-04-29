@@ -12,11 +12,40 @@ Dashboard::Dashboard(float width, float height)
     mHeight(height),
     mSelectedIndex(0)
 {
-    // Use a known-good font path first while testing
     if (!mFont.openFromFile("C:/Windows/Fonts/segoeui.ttf"))
     {
         std::cerr << "Failed to load font.\n";
     }
+
+    initializeButtons();
+}
+
+void Dashboard::initializeButtons()
+{
+    mSortValueButton.setSize({ 160.0f, 40.0f });
+    mSortValueButton.setPosition({ 40.0f, 115.0f });
+    mSortValueButton.setFillColor(sf::Color(70, 110, 180));
+
+    mSortProfitButton.setSize({ 160.0f, 40.0f });
+    mSortProfitButton.setPosition({ 220.0f, 115.0f });
+    mSortProfitButton.setFillColor(sf::Color(90, 140, 100));
+
+    mRemoveButton.setSize({ 180.0f, 40.0f });
+    mRemoveButton.setPosition({ 400.0f, 115.0f });
+    mRemoveButton.setFillColor(sf::Color(180, 80, 80));
+
+    mResetButton.setSize({ 160.0f, 40.0f });
+    mResetButton.setPosition({ 600.0f, 115.0f });
+    mResetButton.setFillColor(sf::Color(120, 120, 120));
+}
+
+bool Dashboard::isMouseOverButton(const sf::RectangleShape& button, float mouseX, float mouseY)
+{
+    sf::Vector2f pos = button.getPosition();
+    sf::Vector2f size = button.getSize();
+
+    return (mouseX >= pos.x && mouseX <= pos.x + size.x &&
+        mouseY >= pos.y && mouseY <= pos.y + size.y);
 }
 
 void Dashboard::run(Portfolio& portfolio)
@@ -61,7 +90,7 @@ void Dashboard::handleEvents(Portfolio& portfolio)
             }
         }
 
-        // Mouse click to select row
+        // Mouse clicks
         if (const auto* mousePressed = event->getIf<sf::Event::MouseButtonPressed>())
         {
             if (mousePressed->button == sf::Mouse::Button::Left)
@@ -69,31 +98,71 @@ void Dashboard::handleEvents(Portfolio& portfolio)
                 float mouseX = static_cast<float>(mousePressed->position.x);
                 float mouseY = static_cast<float>(mousePressed->position.y);
 
-                // Table rows start around y = 245, each row ~38 px tall
-                float startY = 245.0f;
-                float rowHeight = 38.0f;
-
-                std::vector<Asset*> assets = portfolio.getAssets();
-
-                for (size_t i = 0; i < assets.size(); ++i)
+                // -------- BUTTON CLICKS --------
+                if (isMouseOverButton(mSortValueButton, mouseX, mouseY))
                 {
-                    float rowTop = startY + static_cast<float>(i) * rowHeight;
-                    float rowBottom = rowTop + 32.0f;
+                    portfolio.sortByValue();
+                    mSelectedIndex = 0;
+                }
+                else if (isMouseOverButton(mSortProfitButton, mouseX, mouseY))
+                {
+                    portfolio.sortByProfit();
+                    mSelectedIndex = 0;
+                }
+                else if (isMouseOverButton(mRemoveButton, mouseX, mouseY))
+                {
+                    std::vector<Asset*> assets = portfolio.getAssets();
 
-                    // Table area x range
-                    if (mouseX >= 35.0f && mouseX <= 695.0f &&
-                        mouseY >= rowTop - 3.0f && mouseY <= rowBottom)
+                    if (!assets.empty() && mSelectedIndex >= 0 &&
+                        mSelectedIndex < static_cast<int>(assets.size()))
                     {
-                        mSelectedIndex = static_cast<int>(i);
-                        break;
+                        string selectedName = assets[mSelectedIndex]->get_name();
+                        portfolio.removeAsset(selectedName);
+
+                        std::vector<Asset*> updatedAssets = portfolio.getAssets();
+
+                        if (updatedAssets.empty())
+                        {
+                            mSelectedIndex = 0;
+                        }
+                        else if (mSelectedIndex >= static_cast<int>(updatedAssets.size()))
+                        {
+                            mSelectedIndex = static_cast<int>(updatedAssets.size()) - 1;
+                        }
+                    }
+                }
+                else if (isMouseOverButton(mResetButton, mouseX, mouseY))
+                {
+                    mSelectedIndex = 0;
+                }
+                else
+                {
+                    // -------- TABLE ROW CLICK --------
+                    float startY = 290.0f;
+                    float rowHeight = 38.0f;
+
+                    std::vector<Asset*> assets = portfolio.getAssets();
+
+                    for (size_t i = 0; i < assets.size(); ++i)
+                    {
+                        float rowTop = startY + static_cast<float>(i) * rowHeight;
+                        float rowBottom = rowTop + 32.0f;
+
+                        if (mouseX >= 35.0f && mouseX <= 695.0f &&
+                            mouseY >= rowTop - 3.0f && mouseY <= rowBottom)
+                        {
+                            mSelectedIndex = static_cast<int>(i);
+                            break;
+                        }
                     }
                 }
             }
         }
     }
 
-    // Safety: keep selected index valid
+    // Safety: keep selection valid
     std::vector<Asset*> assets = portfolio.getAssets();
+
     if (assets.empty())
     {
         mSelectedIndex = 0;
@@ -110,6 +179,7 @@ void Dashboard::render(Portfolio& portfolio)
 
     drawBackground();
     drawHeader(portfolio);
+    drawButtons();
     drawAssetTable(portfolio);
     drawSelectedAssetPanel(portfolio);
     drawBarChart(portfolio);
@@ -120,38 +190,38 @@ void Dashboard::render(Portfolio& portfolio)
 void Dashboard::drawBackground()
 {
     // Header panel
-    sf::RectangleShape headerPanel({ mWidth - 40.0f, 110.0f });
+    sf::RectangleShape headerPanel({ mWidth - 40.0f, 80.0f });
     headerPanel.setPosition({ 20.0f, 20.0f });
     headerPanel.setFillColor(sf::Color(35, 35, 50));
     mWindow.draw(headerPanel);
 
-    // Asset table panel
-    sf::RectangleShape tablePanel({ 700.0f, 500.0f });
-    tablePanel.setPosition({ 20.0f, 150.0f });
+    // Table panel
+    sf::RectangleShape tablePanel({ 700.0f, 560.0f });
+    tablePanel.setPosition({ 20.0f, 180.0f });
     tablePanel.setFillColor(sf::Color(28, 28, 42));
     mWindow.draw(tablePanel);
 
-    // Selected asset details panel
-    sf::RectangleShape detailsPanel({ 620.0f, 220.0f });
-    detailsPanel.setPosition({ 750.0f, 150.0f });
+    // Selected asset panel
+    sf::RectangleShape detailsPanel({ 650.0f, 230.0f });
+    detailsPanel.setPosition({ 760.0f, 180.0f });
     detailsPanel.setFillColor(sf::Color(28, 28, 42));
     mWindow.draw(detailsPanel);
 
     // Chart panel
-    sf::RectangleShape chartPanel({ 620.0f, 360.0f });
-    chartPanel.setPosition({ 750.0f, 400.0f });
+    sf::RectangleShape chartPanel({ 650.0f, 330.0f });
+    chartPanel.setPosition({ 760.0f, 430.0f });
     chartPanel.setFillColor(sf::Color(28, 28, 42));
     mWindow.draw(chartPanel);
 }
 
 void Dashboard::drawHeader(Portfolio& portfolio)
 {
-    drawText("Interactive Portfolio Dashboard", 40.0f, 35.0f, 30, sf::Color::White);
+    drawText("Interactive Portfolio Dashboard", 40.0f, 35.0f, 28, sf::Color::White);
 
     std::ostringstream totalStream;
     totalStream << std::fixed << std::setprecision(2)
         << "Total Value: $" << portfolio.calculate_total_value();
-    drawText(totalStream.str(), 40.0f, 80.0f, 22, sf::Color(180, 255, 180));
+    drawText(totalStream.str(), 420.0f, 35.0f, 20, sf::Color(180, 255, 180));
 
     double totalProfit = portfolio.calculateProfit();
 
@@ -163,24 +233,37 @@ void Dashboard::drawHeader(Portfolio& portfolio)
         ? sf::Color(120, 255, 120)
         : sf::Color(255, 120, 120);
 
-    drawText(profitStream.str(), 360.0f, 80.0f, 22, profitColor);
+    drawText(profitStream.str(), 720.0f, 35.0f, 20, profitColor);
 
     std::ostringstream countStream;
     countStream << "Assets: " << portfolio.getNumAssets();
-    drawText(countStream.str(), 700.0f, 80.0f, 22, sf::Color::White);
+    drawText(countStream.str(), 1040.0f, 35.0f, 20, sf::Color::White);
 
-    drawText("Click a row or use UP/DOWN arrows", 920.0f, 80.0f, 18, sf::Color(200, 200, 255));
+    drawText("Click rows or buttons | Use UP/DOWN arrows", 420.0f, 65.0f, 16, sf::Color(200, 200, 255));
+}
+
+void Dashboard::drawButtons()
+{
+    mWindow.draw(mSortValueButton);
+    mWindow.draw(mSortProfitButton);
+    mWindow.draw(mRemoveButton);
+    mWindow.draw(mResetButton);
+
+    drawText("Sort by Value", 58.0f, 123.0f, 16, sf::Color::White);
+    drawText("Sort by Profit", 238.0f, 123.0f, 16, sf::Color::White);
+    drawText("Remove Selected", 425.0f, 123.0f, 16, sf::Color::White);
+    drawText("Reset Select", 625.0f, 123.0f, 16, sf::Color::White);
 }
 
 void Dashboard::drawAssetTable(Portfolio& portfolio)
 {
-    drawText("Assets", 40.0f, 165.0f, 24, sf::Color::White);
+    drawText("Assets", 40.0f, 195.0f, 24, sf::Color::White);
 
-    drawText("Name", 40.0f, 205.0f, 18, sf::Color(200, 200, 255));
-    drawText("Value", 280.0f, 205.0f, 18, sf::Color(200, 200, 255));
-    drawText("Profit/Loss", 480.0f, 205.0f, 18, sf::Color(200, 200, 255));
+    drawText("Name", 40.0f, 245.0f, 18, sf::Color(200, 200, 255));
+    drawText("Value", 280.0f, 245.0f, 18, sf::Color(200, 200, 255));
+    drawText("Profit/Loss", 480.0f, 245.0f, 18, sf::Color(200, 200, 255));
 
-    float y = 245.0f;
+    float y = 290.0f;
 
     std::vector<Asset*> assets = portfolio.getAssets();
 
@@ -191,7 +274,6 @@ void Dashboard::drawAssetTable(Portfolio& portfolio)
         sf::RectangleShape rowBg({ 660.0f, 32.0f });
         rowBg.setPosition({ 35.0f, y - 3.0f });
 
-        // Highlight selected row
         if (static_cast<int>(i) == mSelectedIndex)
         {
             rowBg.setFillColor(sf::Color(70, 100, 170));
@@ -228,7 +310,7 @@ void Dashboard::drawAssetTable(Portfolio& portfolio)
 
         y += 38.0f;
 
-        if (y > 620.0f)
+        if (y > 700.0f)
         {
             break;
         }
@@ -237,24 +319,24 @@ void Dashboard::drawAssetTable(Portfolio& portfolio)
 
 void Dashboard::drawSelectedAssetPanel(Portfolio& portfolio)
 {
-    drawText("Selected Asset", 770.0f, 165.0f, 24, sf::Color::White);
+    drawText("Selected Asset Details", 780.0f, 195.0f, 24, sf::Color::White);
 
     std::vector<Asset*> assets = portfolio.getAssets();
 
     if (assets.empty())
     {
-        drawText("No assets loaded.", 780.0f, 220.0f, 18, sf::Color(200, 200, 200));
+        drawText("No assets loaded.", 790.0f, 250.0f, 18, sf::Color(200, 200, 200));
         return;
     }
 
     Asset* selected = assets[mSelectedIndex];
 
-    drawText("Name: " + selected->get_name(), 780.0f, 220.0f, 20, sf::Color::White);
+    drawText("Name: " + selected->get_name(), 790.0f, 255.0f, 20, sf::Color::White);
 
     std::ostringstream valueStream;
     valueStream << std::fixed << std::setprecision(2)
         << "Value: $" << selected->get_value();
-    drawText(valueStream.str(), 780.0f, 265.0f, 20, sf::Color(180, 255, 180));
+    drawText(valueStream.str(), 790.0f, 300.0f, 20, sf::Color(180, 255, 180));
 
     double profit = selected->calculate_profit_and_loss();
 
@@ -266,18 +348,18 @@ void Dashboard::drawSelectedAssetPanel(Portfolio& portfolio)
         ? sf::Color(120, 255, 120)
         : sf::Color(255, 120, 120);
 
-    drawText(profitStream.str(), 780.0f, 310.0f, 20, profitColor);
+    drawText(profitStream.str(), 790.0f, 345.0f, 20, profitColor);
 }
 
 void Dashboard::drawBarChart(Portfolio& portfolio)
 {
-    drawText("Asset Value Chart", 770.0f, 415.0f, 24, sf::Color::White);
+    drawText("Asset Value Chart", 780.0f, 445.0f, 24, sf::Color::White);
 
     std::vector<Asset*> assets = portfolio.getAssets();
 
     if (assets.empty())
     {
-        drawText("No assets to display.", 780.0f, 470.0f, 18, sf::Color(200, 200, 200));
+        drawText("No assets to display.", 790.0f, 500.0f, 18, sf::Color(200, 200, 200));
         return;
     }
 
@@ -290,11 +372,11 @@ void Dashboard::drawBarChart(Portfolio& portfolio)
         }
     }
 
-    const float chartLeft = 790.0f;
+    const float chartLeft = 800.0f;
     const float chartBottom = 720.0f;
-    const float maxBarHeight = 240.0f;
-    const float barWidth = 45.0f;
-    const float spacing = 20.0f;
+    const float maxBarHeight = 220.0f;
+    const float barWidth = 40.0f;
+    const float spacing = 18.0f;
 
     float x = chartLeft;
 
@@ -307,7 +389,6 @@ void Dashboard::drawBarChart(Portfolio& portfolio)
         sf::RectangleShape bar({ barWidth, barHeight });
         bar.setPosition({ x, chartBottom - barHeight });
 
-        // Highlight selected bar
         if (static_cast<int>(i) == mSelectedIndex)
         {
             bar.setFillColor(sf::Color(255, 120, 120));
@@ -325,7 +406,7 @@ void Dashboard::drawBarChart(Portfolio& portfolio)
 
         mWindow.draw(bar);
 
-        drawText(pAsset->get_name(), x - 5.0f, chartBottom + 10.0f, 14, sf::Color::White);
+        drawText(pAsset->get_name(), x - 5.0f, chartBottom + 10.0f, 12, sf::Color::White);
 
         x += barWidth + spacing;
 
@@ -335,7 +416,7 @@ void Dashboard::drawBarChart(Portfolio& portfolio)
         }
     }
 
-    sf::RectangleShape axis({ 500.0f, 2.0f });
+    sf::RectangleShape axis({ 560.0f, 2.0f });
     axis.setPosition({ chartLeft - 10.0f, chartBottom });
     axis.setFillColor(sf::Color::White);
     mWindow.draw(axis);
@@ -347,9 +428,7 @@ void Dashboard::drawText(const std::string& text,
     unsigned int size,
     sf::Color color)
 {
-    // This constructor order is the most likely to work in your SFML 3 build
     sf::Text drawableText(mFont, sf::String(text), size);
-
     drawableText.setPosition(sf::Vector2f(x, y));
     drawableText.setFillColor(color);
 
