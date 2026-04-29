@@ -1,5 +1,6 @@
 #include "Portfolio.hpp"
 
+
 Portfolio::Portfolio(int newNumAssets)
 {
 	numAssets = newNumAssets;
@@ -664,50 +665,17 @@ void Portfolio::addCrypto()
     cout << "Crypto added successfully.\n";
 }
 
-void Portfolio::removeAsset()
+void Portfolio::removeAsset(string assetName)
 {
-    if (numAssets == 0)
+    for (auto it = listOfAssets.begin(); it != listOfAssets.end(); ++it)
     {
-        cout << "Portfolio is empty.\n";
-        return;
-    }
-
-    string assetName;
-    bool found = false;
-
-    cout << "Enter asset name to remove: ";
-    cin >> std::ws;
-    getline(cin, assetName);
-
-    while (assetName.empty())
-    {
-        cout << "Name cannot be empty. Enter asset name: ";
-        getline(cin, assetName);
-    }
-
-    for (int i = 0; i < numAssets; i++)
-    {
-        if (listOfAssets[i]->get_name() == assetName)
+        if ((*it)->get_name() == assetName)
         {
-            delete listOfAssets[i];
-
-            for (int j = i; j < numAssets - 1; j++)
-            {
-                listOfAssets[j] = listOfAssets[j + 1];
-            }
-
-            listOfAssets[numAssets - 1] = nullptr;
-            numAssets--;
-
-            cout << "Asset removed successfully.\n";
-            found = true;
-            break;
+            delete* it;
+            listOfAssets.erase(it);
+            numAssets = static_cast<int>(listOfAssets.size());
+            return;
         }
-    }
-
-    if (!found)
-    {
-        cout << "Asset not found.\n";
     }
 }
 void Portfolio::load_file(std::ifstream& stock,
@@ -746,6 +714,7 @@ void Portfolio::load_file(std::ifstream& stock,
     }
 
 }
+
 void Portfolio::saveToFile()
 {
     std::ofstream stockFile("stock.csv");
@@ -884,4 +853,20 @@ void Portfolio::viewBonds()
     {
         cout << "No bonds found.\n";
     }
+}
+void Portfolio::sortByValue()
+{
+    std::sort(listOfAssets.begin(), listOfAssets.end(),
+        [](Asset* a, Asset* b)
+        {
+            return a->get_value() > b->get_value();
+        });
+}
+void Portfolio::sortByProfit()
+{
+    std::sort(listOfAssets.begin(), listOfAssets.end(),
+        [](Asset* a, Asset* b)
+        {
+            return a->calculate_profit_and_loss() > b->calculate_profit_and_loss();
+        });
 }

@@ -24,6 +24,18 @@ public:
 	virtual double get_value();
 	virtual string get_name() { return name; };
 
+	virtual string get_ticker() { return tickerSymbol; };
+
+	virtual double getCurrentAssetPrice() { return currentAssetPrice; };
+
+	virtual double getPurchasePrice() { return purchasePrice; };
+
+	virtual double getPerformancePercent();
+	virtual double getPortfolioPercentage(double totalPortfolioValue);
+
+	virtual void setCurrentPrice(double newPrice) { currentAssetPrice = newPrice; };
+	virtual void setQuantity(double newQuantity) { quantity = newQuantity; };
+	virtual void setPurchasePrice(double newPurchasePrice) { purchasePrice = newPurchasePrice; };
 	
 protected:
 	double currentAssetPrice;
