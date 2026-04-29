@@ -186,6 +186,7 @@
     <ClCompile Include="Asset.cpp" />
     <ClCompile Include="Bond.cpp" />
     <ClCompile Include="Crypto.cpp" />
+    <ClCompile Include="Dashboard.cpp" />
     <ClCompile Include="ETF.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Portfolio.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="Asset.hpp" />
     <ClInclude Include="Bond.hpp" />
     <ClInclude Include="Crypto.hpp" />
+    <ClInclude Include="Dashboard.hpp" />
     <ClInclude Include="ETF.hpp" />
     <ClInclude Include="Portfolio.hpp" />
     <ClInclude Include="Stock.hpp" />

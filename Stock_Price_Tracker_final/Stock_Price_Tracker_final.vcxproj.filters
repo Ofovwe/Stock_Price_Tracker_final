@@ -36,7 +36,7 @@
     <ClCompile Include="Bond.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="App.cpp">
+    <ClCompile Include="Dashboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,7 +59,7 @@
     <ClInclude Include="Bond.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="App.hpp">
+    <ClInclude Include="Dashboard.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

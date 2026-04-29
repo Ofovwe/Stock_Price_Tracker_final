@@ -12,6 +12,10 @@ public:
 	Portfolio(int newNumAssets = 0);
 
 	~Portfolio();
+
+	int getNumAssets() const;
+
+	const std::vector<Asset*>& getAssets() const;
 	
 	double calculateProfit();
 	void viewStocks();
