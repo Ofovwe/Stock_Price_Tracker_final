@@ -30,7 +30,7 @@ void App::run()
 
         handleChoice(choice);
 
-    } while (choice != 9);
+    } while (choice != 14);
 }
 
 void App::displayMenu()
