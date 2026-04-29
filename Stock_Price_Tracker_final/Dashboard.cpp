@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 
+
 Dashboard::Dashboard(float width, float height)
     : mWindow(sf::VideoMode({ static_cast<unsigned int>(width),
         static_cast<unsigned int>(height) }),
