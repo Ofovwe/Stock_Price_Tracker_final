@@ -5,23 +5,27 @@
 
 class Dashboard
 {
-public:
-	Dashboard(float width = 1200.0f, float height = 800.0f);
-	void run(Portfolio& portfolio);
-
 private:
-	sf::RenderWindow mWindow;
+    sf::RenderWindow mWindow;
     sf::Font mFont;
 
-	float mWidth;
-	float mHeight;
+    float mWidth;
+    float mHeight;
 
-    void handleEvents();
+    int mSelectedIndex;   // which asset is selected
+
+public:
+    Dashboard(float width = 1400.0f, float height = 850.0f);
+    void run(Portfolio& portfolio);
+
+private:
+    void handleEvents(Portfolio& portfolio);
     void render(Portfolio& portfolio);
 
     void drawBackground();
     void drawHeader(Portfolio& portfolio);
     void drawAssetTable(Portfolio& portfolio);
+    void drawSelectedAssetPanel(Portfolio& portfolio);
     void drawBarChart(Portfolio& portfolio);
 
     void drawText(const std::string& text,
