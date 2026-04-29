@@ -4,6 +4,23 @@ using std::cout;
 using std::endl;
 using std::string;
 
+Bond::Bond(string newName,
+    string newTickerSymbol,
+    double newCurrentAssetPrice,
+    double newPurchasePrice,
+    int newNumShares,
+    double newInterestRate,
+    int newYearsToMaturity)
+    : Asset(newCurrentAssetPrice,
+        newPurchasePrice,
+        newName,
+        newTickerSymbol,
+        newNumShares)
+{
+    interestRate = newInterestRate;
+    yearsToMaturity = newYearsToMaturity;
+}
+
 Bond::Bond(std::ifstream& file)
 {
     string line;
@@ -55,4 +72,14 @@ void Bond::displayInfo()
     cout << "Years to Maturity: " << yearsToMaturity << endl;
     cout << "Current Value: $" << get_value() << endl;
     cout << "Profit/Loss: $" << calculate_profit_and_loss() << endl;
+}
+void Bond::saveToFile(std::ofstream& file)
+{
+    file << name << ","
+        << tickerSymbol << ","
+        << currentAssetPrice << ","
+        << purchasePrice << ","
+        << quantity << ","
+        << interestRate << ","
+        << yearsToMaturity << "\n";
 }

@@ -3,6 +3,9 @@
 #include "Asset.hpp"
 #include "Portfolio.hpp"
 
+#include <SFML/Graphics.hpp>
+#include <string>
+
 class Dashboard
 {
 private:
@@ -13,30 +16,28 @@ private:
     float mHeight;
 
     int mSelectedIndex;
-
-    // Buttons
-    sf::RectangleShape mSortValueButton;
-    sf::RectangleShape mSortProfitButton;
-    sf::RectangleShape mRemoveButton;
-    sf::RectangleShape mResetButton;
+    int mScrollOffset;   // <-- ADD THIS
 
 public:
-    Dashboard(float width = 1450.0f, float height = 900.0f);
+    Dashboard(float width = 1400.0f, float height = 850.0f);
     void run(Portfolio& portfolio);
 
 private:
     void handleEvents(Portfolio& portfolio);
     void render(Portfolio& portfolio);
 
-    void initializeButtons();
-    bool isMouseOverButton(const sf::RectangleShape& button, float mouseX, float mouseY);
-
     void drawBackground();
     void drawHeader(Portfolio& portfolio);
-    void drawButtons();
     void drawAssetTable(Portfolio& portfolio);
     void drawSelectedAssetPanel(Portfolio& portfolio);
-    void drawBarChart(Portfolio& portfolio);
+    void drawDonutChart(Portfolio& portfolio);
+
+    int getHoveredChartIndex(Portfolio& portfolio, sf::Vector2f mousePos);
+    sf::Color getChartColor(int index);
+
+    void editSelectedPrice(Portfolio& portfolio);
+    void editSelectedQuantity(Portfolio& portfolio);
+    void editSelectedPurchasePrice(Portfolio& portfolio);
 
     void drawText(const std::string& text,
         float x,

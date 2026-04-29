@@ -3,7 +3,16 @@
 class Stock : public Asset
 {
 public:
+    Stock(string newName = "",
+        string newTickerSymbol = "",
+        double newCurrentAssetPrice = 0.0,
+        double newPurchasePrice = 0.0,
+        int newNumShares = 0,
+        string newSector = "",
+        double newDividendYield = 0.0);
+
     Stock(std::ifstream& file);
+    void saveToFile(std::ofstream& file);
 
     virtual ~Stock();
 

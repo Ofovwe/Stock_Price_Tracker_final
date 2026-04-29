@@ -4,6 +4,23 @@ using std::endl;
 using std::string;
 
 
+Stock::Stock(string newName,
+    string newTickerSymbol,
+    double newCurrentAssetPrice,
+    double newPurchasePrice,
+    int newNumShares,
+    string newSector,
+    double newDividendYield)
+    : Asset(newCurrentAssetPrice,
+        newPurchasePrice,
+        newName,
+        newTickerSymbol,
+        newNumShares)
+{
+    sector = newSector;
+    dividendYield = newDividendYield;
+}
+
 Stock::Stock(std::ifstream& file)
 {
     string line;
@@ -54,4 +71,14 @@ void Stock::displayInfo()
     cout << "Dividend Yield: " << dividendYield << "%" << endl;
     cout << "Current Value: $" << get_value() << endl;
     cout << "Profit/Loss: $" << calculate_profit_and_loss() << endl;
+}
+void Stock::saveToFile(std::ofstream& file)
+{
+    file << name << ","
+        << tickerSymbol << ","
+        << currentAssetPrice << ","
+        << purchasePrice << ","
+        << quantity<< ","
+        << sector << ","
+        << dividendYield << "\n";
 }

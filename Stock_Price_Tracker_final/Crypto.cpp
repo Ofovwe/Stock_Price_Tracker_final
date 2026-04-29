@@ -37,6 +37,23 @@ Crypto::Crypto(std::ifstream& file)
         stakingEnabled = false;
 }
 
+Crypto::Crypto(string newName,
+    string newTickerSymbol,
+    double newCurrentAssetPrice,
+    double newPurchasePrice,
+    int newNumShares,
+    double apy ,
+    bool Staking)
+    : Asset(newCurrentAssetPrice,
+        newPurchasePrice,
+        newName,
+        newTickerSymbol,
+        newNumShares)
+{
+    this->apy = apy;
+    this->stakingEnabled = Staking;
+}
+
 Crypto::~Crypto()
 {}
 
@@ -69,4 +86,14 @@ void Crypto::displayInfo()
 
     cout << "Current Value: $" << get_value() << endl;
     cout << "Profit/Loss: $" << calculate_profit_and_loss() << endl;
+}
+void Crypto::saveToFile(std::ofstream& file)
+{
+    file << name << ","
+        << tickerSymbol << ","
+        << currentAssetPrice << ","
+        << purchasePrice << ","
+        << quantity << ","
+        << apy << ","
+        << stakingEnabled << "\n";
 }

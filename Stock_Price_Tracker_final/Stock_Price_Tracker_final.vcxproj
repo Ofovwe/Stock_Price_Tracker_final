@@ -182,6 +182,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="App.cpp" />
     <ClCompile Include="Asset.cpp" />
     <ClCompile Include="Bond.cpp" />
     <ClCompile Include="Crypto.cpp" />
@@ -192,6 +193,7 @@
     <ClCompile Include="Stock.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="App.hpp" />
     <ClInclude Include="Asset.hpp" />
     <ClInclude Include="Bond.hpp" />
     <ClInclude Include="Crypto.hpp" />
