@@ -19,6 +19,7 @@ public:
     double calculate_profit_and_loss() override;
     double get_value() override;
     void displayInfo() override;
+    string getType() const override;
 
 private:
     string sector;

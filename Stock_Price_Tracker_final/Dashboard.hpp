@@ -5,6 +5,18 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <vector>
+
+enum class AssetView
+{
+    All,
+    Stocks,
+    ETFs,
+    Cryptos,
+    Bonds,
+    BestPerformer,
+    WorstPerformer
+};
 
 class Dashboard
 {
@@ -16,7 +28,9 @@ private:
     float mHeight;
 
     int mSelectedIndex;
-    int mScrollOffset;   // <-- ADD THIS
+    int mScrollOffset;
+
+    AssetView mCurrentView;
 
 public:
     Dashboard(float width = 1400.0f, float height = 850.0f);
@@ -31,6 +45,9 @@ private:
     void drawAssetTable(Portfolio& portfolio);
     void drawSelectedAssetPanel(Portfolio& portfolio);
     void drawDonutChart(Portfolio& portfolio);
+
+    std::vector<Asset*> getFilteredAssets(Portfolio& portfolio);
+    void resetSelection();
 
     int getHoveredChartIndex(Portfolio& portfolio, sf::Vector2f mousePos);
     sf::Color getChartColor(int index);

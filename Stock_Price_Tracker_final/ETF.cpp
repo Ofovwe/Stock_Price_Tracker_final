@@ -23,6 +23,10 @@ ETF::ETF(string newName,
     expenseRatio = newExpenseRatio;
     benchmarkIndex = newBenchmarkIndex;
 }
+std::string ETF::getType() const
+{
+    return "ETF";
+}
 ETF::ETF(std::ifstream& file)
 {
     string line;

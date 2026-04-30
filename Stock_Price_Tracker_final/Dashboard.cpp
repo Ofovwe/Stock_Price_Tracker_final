@@ -12,7 +12,8 @@ Dashboard::Dashboard(float width, float height)
     : mWidth(width),
     mHeight(height),
     mSelectedIndex(0),
-    mScrollOffset(0)
+    mScrollOffset(0),
+    mCurrentView(AssetView::All)
 {
     if (!mFont.openFromFile("C:/Windows/Fonts/segoeui.ttf"))
     {
@@ -22,7 +23,6 @@ Dashboard::Dashboard(float width, float height)
 
 void Dashboard::run(Portfolio& portfolio)
 {
-    // Recreate window every time dashboard is opened
     mWindow.create(
         sf::VideoMode({ static_cast<unsigned int>(mWidth),
                         static_cast<unsigned int>(mHeight) }),
@@ -31,12 +31,91 @@ void Dashboard::run(Portfolio& portfolio)
 
     mSelectedIndex = 0;
     mScrollOffset = 0;
+    mCurrentView = AssetView::All;
 
     while (mWindow.isOpen())
     {
         handleEvents(portfolio);
         render(portfolio);
     }
+}
+
+void Dashboard::resetSelection()
+{
+    mSelectedIndex = 0;
+    mScrollOffset = 0;
+}
+
+std::vector<Asset*> Dashboard::getFilteredAssets(Portfolio& portfolio)
+{
+    std::vector<Asset*> result;
+    const std::vector<Asset*>& assets = portfolio.getAssets();
+
+    if (mCurrentView == AssetView::BestPerformer)
+    {
+        if (!assets.empty())
+        {
+            Asset* best = assets[0];
+
+            for (Asset* asset : assets)
+            {
+                if (asset->getPerformancePercent() > best->getPerformancePercent())
+                {
+                    best = asset;
+                }
+            }
+
+            result.push_back(best);
+        }
+
+        return result;
+    }
+
+    if (mCurrentView == AssetView::WorstPerformer)
+    {
+        if (!assets.empty())
+        {
+            Asset* worst = assets[0];
+
+            for (Asset* asset : assets)
+            {
+                if (asset->getPerformancePercent() < worst->getPerformancePercent())
+                {
+                    worst = asset;
+                }
+            }
+
+            result.push_back(worst);
+        }
+
+        return result;
+    }
+
+    for (Asset* asset : assets)
+    {
+        if (mCurrentView == AssetView::All)
+        {
+            result.push_back(asset);
+        }
+        else if (mCurrentView == AssetView::Stocks && asset->getType() == "Stock")
+        {
+            result.push_back(asset);
+        }
+        else if (mCurrentView == AssetView::ETFs && asset->getType() == "ETF")
+        {
+            result.push_back(asset);
+        }
+        else if (mCurrentView == AssetView::Cryptos && asset->getType() == "Crypto")
+        {
+            result.push_back(asset);
+        }
+        else if (mCurrentView == AssetView::Bonds && asset->getType() == "Bond")
+        {
+            result.push_back(asset);
+        }
+    }
+
+    return result;
 }
 
 void Dashboard::handleEvents(Portfolio& portfolio)
@@ -52,7 +131,43 @@ void Dashboard::handleEvents(Portfolio& portfolio)
 
         if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
         {
-            const std::vector<Asset*>& assets = portfolio.getAssets();
+            if (keyPressed->scancode == sf::Keyboard::Scancode::Num1)
+            {
+                mCurrentView = AssetView::All;
+                resetSelection();
+            }
+            else if (keyPressed->scancode == sf::Keyboard::Scancode::Num2)
+            {
+                mCurrentView = AssetView::Stocks;
+                resetSelection();
+            }
+            else if (keyPressed->scancode == sf::Keyboard::Scancode::Num3)
+            {
+                mCurrentView = AssetView::ETFs;
+                resetSelection();
+            }
+            else if (keyPressed->scancode == sf::Keyboard::Scancode::Num4)
+            {
+                mCurrentView = AssetView::Cryptos;
+                resetSelection();
+            }
+            else if (keyPressed->scancode == sf::Keyboard::Scancode::Num5)
+            {
+                mCurrentView = AssetView::Bonds;
+                resetSelection();
+            }
+            else if (keyPressed->scancode == sf::Keyboard::Scancode::Num6)
+            {
+                mCurrentView = AssetView::BestPerformer;
+                resetSelection();
+            }
+            else if (keyPressed->scancode == sf::Keyboard::Scancode::Num7)
+            {
+                mCurrentView = AssetView::WorstPerformer;
+                resetSelection();
+            }
+
+            std::vector<Asset*> assets = getFilteredAssets(portfolio);
 
             if (!assets.empty())
             {
@@ -115,7 +230,7 @@ void Dashboard::handleEvents(Portfolio& portfolio)
                 float startY = 245.0f;
                 float rowHeight = 38.0f;
 
-                const std::vector<Asset*>& assets = portfolio.getAssets();
+                std::vector<Asset*> assets = getFilteredAssets(portfolio);
 
                 for (int visibleIndex = 0; visibleIndex < visibleRows; ++visibleIndex)
                 {
@@ -140,8 +255,7 @@ void Dashboard::handleEvents(Portfolio& portfolio)
         }
     }
 
-    // Keep selection + scroll valid
-    const std::vector<Asset*>& assets = portfolio.getAssets();
+    std::vector<Asset*> assets = getFilteredAssets(portfolio);
 
     if (assets.empty())
     {
@@ -237,6 +351,9 @@ void Dashboard::drawHeader(Portfolio& portfolio)
     countStream << "Assets: " << portfolio.getNumAssets();
     drawText(countStream.str(), 700.0f, 80.0f, 22, sf::Color::White);
 
+    drawText("1 All | 2 Stocks | 3 ETFs | 4 Crypto | 5 Bonds | 6 Best | 7 Worst",
+        850.0f, 55.0f, 15, sf::Color(200, 200, 255));
+
     drawText("UP/DOWN Select | P Edit Price | Q Edit Qty | B Edit Buy Price | S Save | ESC Exit",
         850.0f, 80.0f, 15, sf::Color(200, 200, 255));
 }
@@ -252,7 +369,7 @@ void Dashboard::drawAssetTable(Portfolio& portfolio)
     float y = 245.0f;
     const int visibleRows = 10;
 
-    const std::vector<Asset*>& assets = portfolio.getAssets();
+    std::vector<Asset*> assets = getFilteredAssets(portfolio);
 
     for (int visibleIndex = 0; visibleIndex < visibleRows; ++visibleIndex)
     {
@@ -314,13 +431,17 @@ void Dashboard::drawAssetTable(Portfolio& portfolio)
 
         drawText(scrollInfo.str(), 40.0f, 630.0f, 14, sf::Color(180, 180, 220));
     }
+    else
+    {
+        drawText("No assets in this view.", 40.0f, 250.0f, 18, sf::Color(200, 200, 200));
+    }
 }
 
 void Dashboard::drawSelectedAssetPanel(Portfolio& portfolio)
 {
     drawText("Selected Asset", 770.0f, 165.0f, 24, sf::Color::White);
 
-    const std::vector<Asset*>& assets = portfolio.getAssets();
+    std::vector<Asset*> assets = getFilteredAssets(portfolio);
 
     if (assets.empty())
     {
@@ -337,7 +458,7 @@ void Dashboard::drawSelectedAssetPanel(Portfolio& portfolio)
 
     std::ostringstream quantityStream;
     quantityStream << std::fixed << std::setprecision(4)
-        << "Quantity: " << selected->get_value();
+        << "Quantity: " << selected->get_quantity();
     drawText(quantityStream.str(), 780.0f, 270.0f, 18, sf::Color::White);
 
     std::ostringstream priceStream;
@@ -382,7 +503,7 @@ void Dashboard::drawDonutChart(Portfolio& portfolio)
 {
     drawText("Portfolio Allocation", 770.0f, 415.0f, 24, sf::Color::White);
 
-    const std::vector<Asset*>& assets = portfolio.getAssets();
+    std::vector<Asset*> assets = getFilteredAssets(portfolio);
 
     if (assets.empty())
     {
@@ -390,7 +511,12 @@ void Dashboard::drawDonutChart(Portfolio& portfolio)
         return;
     }
 
-    double totalValue = portfolio.calculate_total_value();
+    double totalValue = 0.0;
+
+    for (Asset* asset : assets)
+    {
+        totalValue += asset->get_value();
+    }
 
     if (totalValue <= 0)
     {
@@ -413,7 +539,7 @@ void Dashboard::drawDonutChart(Portfolio& portfolio)
 
     for (size_t i = 0; i < assets.size(); ++i)
     {
-        double percentage = assets[i]->getPortfolioPercentage(totalValue);
+        double percentage = (assets[i]->get_value() / totalValue) * 100.0;
         float sweepAngle = static_cast<float>((percentage / 100.0) * 360.0f);
 
         float currentRadius = radius;
@@ -446,7 +572,6 @@ void Dashboard::drawDonutChart(Portfolio& portfolio)
         startAngle += sweepAngle;
     }
 
-    // Inner circle
     sf::CircleShape innerCircle(innerRadius);
     innerCircle.setOrigin(sf::Vector2f(innerRadius, innerRadius));
     innerCircle.setPosition(sf::Vector2f(centerX, centerY));
@@ -456,11 +581,9 @@ void Dashboard::drawDonutChart(Portfolio& portfolio)
     std::ostringstream totalStream;
     totalStream << "$" << std::fixed << std::setprecision(2) << totalValue;
 
-    // Create centered total value text
     sf::Text totalValueText(mFont, sf::String(totalStream.str()), 20);
     totalValueText.setFillColor(sf::Color::White);
 
-    // Use local bounds to center text properly
     sf::FloatRect totalBounds = totalValueText.getLocalBounds();
     totalValueText.setPosition(sf::Vector2f(
         centerX - (totalBounds.size.x / 2.0f),
@@ -469,8 +592,7 @@ void Dashboard::drawDonutChart(Portfolio& portfolio)
 
     mWindow.draw(totalValueText);
 
-    // Create centered label text
-    sf::Text labelText(mFont, sf::String("Total Value"), 14);
+    sf::Text labelText(mFont, sf::String("View Value"), 14);
     labelText.setFillColor(sf::Color(200, 200, 200));
 
     sf::FloatRect labelBounds = labelText.getLocalBounds();
@@ -485,11 +607,11 @@ void Dashboard::drawDonutChart(Portfolio& portfolio)
     {
         Asset* hovered = assets[hoveredIndex];
 
-        double hoveredPercent = hovered->getPortfolioPercentage(totalValue);
+        double hoveredPercent = (hovered->get_value() / totalValue) * 100.0;
 
         std::ostringstream percentStream;
         percentStream << std::fixed << std::setprecision(2)
-            << hoveredPercent << "% of portfolio";
+            << hoveredPercent << "% of current view";
 
         std::ostringstream priceStream;
         priceStream << "$" << std::fixed << std::setprecision(2)
@@ -507,9 +629,14 @@ void Dashboard::drawDonutChart(Portfolio& portfolio)
 
 int Dashboard::getHoveredChartIndex(Portfolio& portfolio, sf::Vector2f mousePos)
 {
-    const std::vector<Asset*>& assets = portfolio.getAssets();
+    std::vector<Asset*> assets = getFilteredAssets(portfolio);
 
-    double totalValue = portfolio.calculate_total_value();
+    double totalValue = 0.0;
+
+    for (Asset* asset : assets)
+    {
+        totalValue += asset->get_value();
+    }
 
     if (assets.empty() || totalValue <= 0)
     {
@@ -543,7 +670,7 @@ int Dashboard::getHoveredChartIndex(Portfolio& portfolio, sf::Vector2f mousePos)
 
     for (size_t i = 0; i < assets.size(); ++i)
     {
-        double percentage = assets[i]->getPortfolioPercentage(totalValue);
+        double percentage = (assets[i]->get_value() / totalValue) * 100.0;
         float sweepAngle = static_cast<float>((percentage / 100.0) * 360.0f);
 
         if (angle >= currentAngle && angle <= currentAngle + sweepAngle)
@@ -574,7 +701,7 @@ sf::Color Dashboard::getChartColor(int index)
 
 void Dashboard::editSelectedPrice(Portfolio& portfolio)
 {
-    const std::vector<Asset*>& assets = portfolio.getAssets();
+    std::vector<Asset*> assets = getFilteredAssets(portfolio);
 
     if (assets.empty())
     {
@@ -603,7 +730,7 @@ void Dashboard::editSelectedPrice(Portfolio& portfolio)
 
 void Dashboard::editSelectedQuantity(Portfolio& portfolio)
 {
-    const std::vector<Asset*>& assets = portfolio.getAssets();
+    std::vector<Asset*> assets = getFilteredAssets(portfolio);
 
     if (assets.empty())
     {
@@ -632,7 +759,7 @@ void Dashboard::editSelectedQuantity(Portfolio& portfolio)
 
 void Dashboard::editSelectedPurchasePrice(Portfolio& portfolio)
 {
-    const std::vector<Asset*>& assets = portfolio.getAssets();
+    std::vector<Asset*> assets = getFilteredAssets(portfolio);
 
     if (assets.empty())
     {

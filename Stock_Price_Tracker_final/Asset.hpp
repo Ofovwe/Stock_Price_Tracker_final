@@ -36,11 +36,15 @@ public:
 	virtual void setCurrentPrice(double newPrice) { currentAssetPrice = newPrice; };
 	virtual void setQuantity(double newQuantity) { quantity = newQuantity; };
 	virtual void setPurchasePrice(double newPurchasePrice) { purchasePrice = newPurchasePrice; };
+	virtual string getType() const = 0;
+	virtual double get_quantity();
 	
 protected:
 	double currentAssetPrice;
 	double purchasePrice;
 	string name;
+	
+	
 	string tickerSymbol;
 	double quantity;
 };

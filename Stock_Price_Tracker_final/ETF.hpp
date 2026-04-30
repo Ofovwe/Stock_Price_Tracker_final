@@ -10,6 +10,8 @@ public:
         int newNumShares = 0,
         double newExpenseRatio = 0.0,
         string newBenchmarkIndex = "");
+        std::string getType() const override;
+  
 
     ETF(std::ifstream& file);
     void saveToFile(std::ofstream& file);

@@ -87,6 +87,10 @@ void Crypto::displayInfo()
     cout << "Current Value: $" << get_value() << endl;
     cout << "Profit/Loss: $" << calculate_profit_and_loss() << endl;
 }
+std::string Crypto::getType() const
+{
+    return "Crypto";
+}
 void Crypto::saveToFile(std::ofstream& file)
 {
     file << name << ","

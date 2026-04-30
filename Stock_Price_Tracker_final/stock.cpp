@@ -72,6 +72,10 @@ void Stock::displayInfo()
     cout << "Current Value: $" << get_value() << endl;
     cout << "Profit/Loss: $" << calculate_profit_and_loss() << endl;
 }
+string Stock::getType() const
+{
+    return "Stock";
+}
 void Stock::saveToFile(std::ofstream& file)
 {
     file << name << ","

@@ -56,6 +56,11 @@ double Bond::calculate_profit_and_loss()
     return (currentAssetPrice - purchasePrice) * quantity;
 }
 
+std::string Bond::getType() const
+{
+    return "Bond";
+}
+
 double Bond::get_value()
 {
     return currentAssetPrice * quantity;

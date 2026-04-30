@@ -38,6 +38,16 @@ double Asset::getPortfolioPercentage(double totalPortfolioValue)
     return (get_value() / totalPortfolioValue) * 100.0;
 }
 
+string Asset::getType() const
+{
+    return string();
+}
+
+double Asset::get_quantity()
+{
+    return this->quantity;
+}
+
 void App::initializeButtons()
 {
     mLoadButton.setSize({ 280.0f, 55.0f });

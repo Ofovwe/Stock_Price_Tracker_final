@@ -21,6 +21,8 @@ public:
     void saveToFile(std::ofstream& file);
 
     double calculate_profit_and_loss() override;
+    std::string getType() const override;
+
     double get_value() override;
     void displayInfo() override;
 
