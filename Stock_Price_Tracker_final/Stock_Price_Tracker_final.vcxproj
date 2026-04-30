@@ -191,6 +191,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Portfolio.cpp" />
     <ClCompile Include="Stock.cpp" />
+    <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.hpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="ETF.hpp" />
     <ClInclude Include="Portfolio.hpp" />
     <ClInclude Include="Stock.hpp" />
+    <ClInclude Include="Test.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Bond.csv" />
